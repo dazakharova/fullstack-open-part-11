@@ -7,8 +7,9 @@ const AnecdoteForm = () => {
 
   const addAnecdote = async (event) => {
     event.preventDefault()
-    const content = event.target.anecdote.value
-    event.target.anecdote.value = ''
+    const form = event.currentTarget
+    const content = new FormData(form).get('anecdote')?.toString() || ''
+    form.reset()
 
     dispatch(createAnecdote(content))
   }
@@ -16,10 +17,13 @@ const AnecdoteForm = () => {
   return (
       <div>
         <h2>create new</h2>
-        <form onSubmit={addAnecdote}>
-          <div><input name="anecdote" /></div>
-          <button type="submit">create</button>
-        </form>
+          <form onSubmit={addAnecdote}>
+            <div>
+              <label htmlFor="anecdote-input">anecdote</label>{' '}
+              <input id="anecdote-input" name="anecdote" type="text" />
+            </div>
+            <button type="submit">create</button>
+          </form>
       </div>
   )
 }
