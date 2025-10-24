@@ -1,0 +1,43 @@
+module.exports = {
+  root: true,
+  env: {
+    browser: true,
+    es2021: true,
+    node: true
+  },
+  settings: {
+    react: { version: 'detect' }
+  },
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    ecmaFeatures: { jsx: true }
+  },
+  plugins: ['react', 'react-hooks'],
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended'
+  ],
+  rules: {
+    'react/react-in-jsx-scope': 'off', // React 17+ no need to import React
+    'react/prop-types': 'off'
+  },
+  overrides: [
+    {
+      files: ['**/*.test.*', 'tests/**'],
+      globals: {
+        vi: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        test: 'readonly',
+        expect: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly'
+      }
+    }
+  ],
+  ignorePatterns: ['dist/', 'node_modules/', 'playwright-report/']
+}
