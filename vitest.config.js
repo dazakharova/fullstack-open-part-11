@@ -8,5 +8,12 @@ export default defineConfig({
     globals: true,
     setupFiles: './tests/setupTests.js',
     css: true,
+    exclude: [
+      'e2e/**',
+      'node_modules/**',
+      'dist/**',
+      'playwright-report/**',
+      '.git/**'
+    ],
   },
 })
