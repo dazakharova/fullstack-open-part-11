@@ -3,7 +3,7 @@ name: Deployment pipeline
 on:
   push:
     branches:
-      - main
+      - '**'
   pull_request:
     branches: [ main ]
     types: [ opened, synchronize ]
@@ -36,3 +36,13 @@ jobs:
 
       - name: Playwright tests
         run: npm run test:e2e
+
+  deploy:
+    needs: ci
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger API (json-server) deployment
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_API_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      - name: Trigger frontend deployment
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_FE_ID }}?key=${{ secrets.RENDER_FE_KEY }}
