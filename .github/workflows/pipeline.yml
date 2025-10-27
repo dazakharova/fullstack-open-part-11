@@ -3,7 +3,7 @@ name: Deployment pipeline
 on:
   push:
     branches:
-      - '**'
+      - main
   pull_request:
     branches: [ main ]
     types: [ opened, synchronize ]
@@ -52,3 +52,19 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: "A new version of AnecdotesApp deployed"
+
+  tag_release:
+    needs: deploy
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.75.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
