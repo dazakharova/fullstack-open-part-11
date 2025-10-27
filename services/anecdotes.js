@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://localhost:3001/anecdotes'
+const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001/anecdotes'
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
